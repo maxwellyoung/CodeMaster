@@ -7,14 +7,23 @@ import QuestionCard from "./QuestionCard";
 
 type QuestionFormProps = {
   initialCode?: string | null;
+  initialRemainingRequests: number;
+  onRequestsChange: (newCount: number) => void;
 };
 
-const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
+const QuestionForm: React.FC<QuestionFormProps> = ({
+  initialCode,
+  initialRemainingRequests,
+  onRequestsChange,
+}) => {
   const [question, setQuestion] = useState(initialCode || "");
   const [similarQuestions, setSimilarQuestions] = useState<
     { title: string; description: string }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const [remainingRequests, setRemainingRequests] = useState(
+    initialRemainingRequests
+  );
   const { toast } = useToast();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -29,7 +38,6 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
       return;
     }
 
-    const remainingRequests = 0; // This should be dynamically set based on your app logic
     if (remainingRequests <= 0) {
       toast({
         title: "Limit Reached",
@@ -52,11 +60,22 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
 
       const data = await response.json();
       setSimilarQuestions(data.similarQuestions || []);
+      setRemainingRequests((prev) => {
+        const newCount = prev - 1;
+        onRequestsChange(newCount);
+        return newCount;
+      });
+
       if (textareaRef.current) {
         textareaRef.current.scrollIntoView({ behavior: "smooth" });
       }
     } catch (error) {
       console.error("Error generating similar questions:", error);
+      toast({
+        title: "Error",
+        description: "There was an error processing your request.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -72,25 +91,19 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
   return (
     <div className="flex items-center justify-center min-h-screen p-8">
       <motion.div
-        className="w-full max-w-4xl p-8 bg-[#FCFCFC] dark:bg-[#1A1A1A] rounded-lg shadow-lg"
+        className="w-full max-w-7xl p-12 bg-white dark:bg-[#1A1A1A] rounded-lg shadow-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-5xl font-extrabold tracking-tight text-[#171717] dark:text-white">
+            <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               CodeMaster
             </h1>
-            <p className="text-[#232323] dark:text-white/90 text-lg font-light">
+            <p className="text-gray-700 dark:text-white/90 text-lg font-light">
               Your AI-Powered Coding Practice Tool
             </p>
-          </div>
-          <div className="text-right">
-            <span className="text-lg text-[#232323] dark:text-white/90">
-              Current Plan:
-            </span>
-            <span className="block text-xl font-bold text-[#6466F1]">Free</span>
           </div>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -99,12 +112,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Enter your coding question here..."
-            rows={6}
-            className="w-full p-4 text-lg border-none rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-[#f8f8f8] dark:bg-[#141414] text-[#171717] dark:text-white placeholder-[#666666] dark:placeholder-[#D9D9D9]"
+            rows={8}
+            className="w-full p-4 text-lg border-none rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-gray-100 dark:bg-[#141414] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
           <Button
             type="submit"
-            className="w-full py-3 text-lg rounded-lg shadow-lg transition-all duration-300 ease-in-out transform bg-gradient-to-r from-[#FF6B00] to-[#FF5C00] hover:-translate-y-1 hover:shadow-2xl text-white dark:bg-[#DD5D1D] dark:hover:bg-[#D14600]"
+            className="w-full py-4 text-lg rounded-lg shadow-lg transition-all duration-300 ease-in-out transform bg-gradient-to-r from-[#FF6B00] to-[#FF5C00] hover:-translate-y-1 hover:shadow-2xl text-white dark:bg-[#DD5D1D] dark:hover:bg-[#D14600]"
             disabled={loading}
           >
             {loading ? "Generating..." : "Get Similar Questions"}
@@ -113,12 +126,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
 
         {similarQuestions.length > 0 && (
           <motion.div
-            className="mt-10 space-y-6"
+            className="mt-12 space-y-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <h3 className="text-2xl font-medium text-[#171717] dark:text-white mb-4">
+            <h3 className="text-2xl font-medium text-gray-900 dark:text-white mb-4">
               Similar Questions
             </h3>
             <div className="space-y-6">
@@ -127,7 +140,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
                   key={index}
                   title={q.title}
                   description={q.description}
-                  onSelect={() => handleQuestionSelect(q.title)}
+                  onSelect={handleQuestionSelect} // Pass the description to handleQuestionSelect
                 />
               ))}
             </div>
