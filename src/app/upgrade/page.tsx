@@ -8,6 +8,8 @@ const UpgradePage: React.FC = () => {
   const router = useRouter();
 
   const handleUpgrade = async () => {
+    setLoading(true); // Set loading to true when the process starts
+
     try {
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
@@ -17,32 +19,34 @@ const UpgradePage: React.FC = () => {
         body: JSON.stringify({ lookup_key: "your-lookup-key" }),
       });
 
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
       const data = await response.json();
 
       if (data.url) {
-        window.location.href = data.url;
+        window.location.href = data.url; // Redirect to the Stripe checkout page
       } else {
         console.error("No URL returned for checkout session");
+        setLoading(false); // Stop loading if there's an error
       }
     } catch (error) {
       console.error("Error during checkout session creation", error);
+      setLoading(false); // Stop loading if there's an error
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-dark-gradient">
-      <h1 className="text-3xl font-bold mb-6">Upgrade to Pro Plan</h1>
-      <p className="mb-4">
-        Get access to unlimited questions and premium features.
-      </p>
-      <button
-        onClick={handleUpgrade}
-        className="py-3 px-6 bg-primary text-white rounded-lg shadow-lg hover:bg-primaryHover"
-        disabled={loading}
-      >
-        {loading ? "Redirecting..." : "Upgrade Now"}
-      </button>
-    </div>
+    <button
+      onClick={handleUpgrade}
+      className={`py-3 px-6 bg-primary text-white rounded-lg shadow-lg hover:bg-primaryHover ${
+        loading ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+      disabled={loading}
+    >
+      {loading ? "Redirecting..." : "Upgrade Now"}
+    </button>
   );
 };
 

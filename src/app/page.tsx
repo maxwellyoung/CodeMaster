@@ -11,6 +11,7 @@ import {
 } from "../utils/userInfo";
 import SubscriptionSection from "./components/SubscriptionSection";
 import RemainingRequests from "./components/RemainingRequests";
+import Footer from "./components/Footer";
 
 type Question = {
   title: string;
@@ -99,7 +100,7 @@ const HomePage = () => {
 
       {/* Remaining Requests and Subscription Status */}
       <RemainingRequests count={remainingRequests} />
-      <SubscriptionSection status={subscriptionStatus} />
+      <SubscriptionSection status={subscriptionStatus as "paid" | "free"} />
 
       {/* Filters Container with Max Width */}
       <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -184,6 +185,7 @@ const HomePage = () => {
           </motion.div>
         ))}
       </div>
+      <Footer />
     </div>
   );
 };

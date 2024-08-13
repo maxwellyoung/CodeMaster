@@ -45,19 +45,19 @@ Please generate similar questions that test the same concept. The output should 
             
 Here is an example of the desired output structure:
 
-"Question 1: [Direct question about the concept]
+"Direct question about the concept]
 
-Challenge 1: [A challenge related to the concept]
+A challenge related to the concept]
 
-Question 2: [Another direct question]
+Another direct question]
 
-Challenge 2: [Another challenge]"
+Another challenge]"
 
 Please ensure that the response is logically ordered and free from any formatting errors.
         `,
         },
       ],
-      max_tokens: 500, // Increased token limit to allow for more detailed responses
+      max_tokens: 1000, // Increased token limit to allow for more detailed responses
     });
 
     const rawOutput = completion.choices[0].message?.content?.trim();
