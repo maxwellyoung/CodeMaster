@@ -72,7 +72,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
   return (
     <div className="flex items-center justify-center min-h-screen p-8">
       <motion.div
-        className="w-full max-w-4xl p-8 bg-[#FCFCFC] dark:bg-[#1A1A1A] rounded-lg shadow-md"
+        className="w-full max-w-4xl p-8 bg-[#FCFCFC] dark:bg-[#1A1A1A] rounded-lg shadow-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
