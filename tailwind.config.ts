@@ -8,10 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        darkBg: "#0F0F0F", // Dark background color
+        darkCard: "#1B1B1B", // Darker card background
+        lightText: "#E5E5E5", // Light text color for contrast
+        primary: "#6366F1", // Primary color for buttons and accents
+        primaryHover: "#4F46E5", // Hover color for primary buttons
+      },
+      boxShadow: {
+        glow: "#6466F1", // Glow effect for buttons
+      },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "dark-gradient": "linear-gradient(135deg, #2E2E2E 0%, #0F0F0F 100%)", // Gradient background
       },
     },
   },

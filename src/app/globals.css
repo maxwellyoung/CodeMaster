@@ -2,32 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+/* Background Gradient */
+.bg-dark-gradient {
+  background: radial-gradient(
+    circle,
+    rgba(63, 63, 63, 1) 0%,
+    rgba(35, 35, 35, 1) 60%,
+    rgba(18, 18, 18, 1) 100%
+  );
+  color: white;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* Moving Background Light Effect */
+.bg-dark-gradient::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1),
+    transparent 70%
+  );
+  filter: blur(200px);
+  animation: animateBackground 20s linear infinite;
+  transform-origin: center;
+  z-index: -1;
+}
+
+/* Background Animation Keyframes */
+@keyframes animateBackground {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+/* Custom Component for Glowing Shadows */
+@layer components {
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(100, 102, 241, 0.5),
+      0 0 40px rgba(100, 102, 241, 0.3), 0 0 60px rgba(100, 102, 241, 0.2);
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .shadow-glow:hover {
+    box-shadow: 0 0 40px rgba(100, 102, 241, 0.7),
+      0 0 60px rgba(100, 102, 241, 0.5), 0 0 80px rgba(100, 102, 241, 0.3);
   }
 }
