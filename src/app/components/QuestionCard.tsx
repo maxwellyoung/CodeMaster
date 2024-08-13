@@ -19,27 +19,25 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   return (
     <motion.div
-      className="w-full md:w-80 p-6" // Increased width and padding for larger cards
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
+      className="w-full p-6"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onSelect} // Handle click event
     >
       <Card className="p-6 shadow-lg rounded-lg bg-darkCard h-full border border-gray-700">
-        <h2 className="text-xl font-semibold text-lightText mb-3">{title}</h2>{" "}
-        {/* Increased text size */}
-        <p className="text-gray-400 text-base mb-4">{description}</p>{" "}
-        {/* Increased text size */}
+        <h2 className="text-xl font-semibold text-lightText mb-1">{title}</h2>
+        <p className="text-gray-400 text-sm mb-2">{description}</p>
         {difficulty && (
-          <p className="text-sm text-lightText mb-3">
+          <p className="text-sm text-lightText mb-1">
             Difficulty: {difficulty}
           </p>
         )}
         {tags && (
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="flex flex-wrap gap-1 mb-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-gray-700 text-gray-300 px-3 py-1 rounded-md text-sm"
+                className="bg-gray-700 text-gray-300 px-2 py-1 rounded-md text-xs"
               >
                 {tag}
               </span>

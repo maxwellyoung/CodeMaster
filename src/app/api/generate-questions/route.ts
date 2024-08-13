@@ -1,10 +1,21 @@
 import OpenAI from "openai";
+import { rateLimit } from "../../../utils/rateLimit";
+import { NextRequest, NextResponse } from "next/server";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const rateLimitResponse = await rateLimit(request, 10);
+
+  if (rateLimitResponse.error) {
+    return NextResponse.json(
+      { message: rateLimitResponse.error },
+      { status: rateLimitResponse.status }
+    );
+  }
+
   const { question } = await request.json();
 
   try {
@@ -54,18 +65,13 @@ Please ensure that the response is logically ordered and free from any formattin
       ?.split("\n\n") // Split by double newline to separate questions clearly
       .filter((q) => q.trim() !== ""); // Remove any empty segments
 
-    return new Response(JSON.stringify({ similarQuestions }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json({ similarQuestions });
   } catch (error) {
     console.error("Error in generating similar questions:", error);
 
     const errorMessage =
       (error as Error).message ||
       "An unknown error occurred while generating similar questions.";
-    return new Response(JSON.stringify({ error: errorMessage }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

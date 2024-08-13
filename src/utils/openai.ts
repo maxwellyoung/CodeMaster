@@ -7,7 +7,7 @@ const openai = new OpenAI({
 export const generateAIRecommendations = async (prompt: string) => {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Make sure this model exists and is correct
+      model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
       max_tokens: 150,
     });

@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import QuestionForm from "./components/QuestionForm";
 import QuestionCard from "./components/QuestionCard";
 import { supabase } from "../utils/supabase/client";
+import {
+  fetchRemainingRequests,
+  fetchSubscriptionStatus,
+} from "../utils/userInfo";
+import SubscriptionSection from "./components/SubscriptionSection";
+import RemainingRequests from "./components/RemainingRequests";
 
 // Define the type for a question
 type Question = {
@@ -21,9 +27,11 @@ const HomePage = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("All");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [remainingRequests, setRemainingRequests] = useState<number>(0);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string>("free");
 
   // Fetch questions from Supabase on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchQuestions = async () => {
       const { data, error } = await supabase.from("questions").select("*");
 
@@ -35,6 +43,19 @@ const HomePage = () => {
     };
 
     fetchQuestions();
+  }, []);
+
+  // Fetch remaining requests and subscription status
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const remaining = await fetchRemainingRequests();
+      const status = await fetchSubscriptionStatus();
+
+      setRemainingRequests(remaining);
+      setSubscriptionStatus(status);
+    };
+
+    fetchUserInfo();
   }, []);
 
   const handleQuestionSelect = (question: Question) => {
@@ -81,6 +102,10 @@ const HomePage = () => {
       <h2 className="text-3xl font-bold text-center mt-10 mb-8 text-lightText">
         Example Coding Questions
       </h2>
+
+      {/* Remaining Requests and Subscription Status */}
+      <RemainingRequests count={remainingRequests} />
+      <SubscriptionSection status={subscriptionStatus} />
 
       {/* Filters Container with Max Width */}
       <div className="w-full max-w-6xl mx-auto space-y-4">

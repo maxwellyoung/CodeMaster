@@ -1,30 +1,19 @@
-"use client";
-
-import React, { useState, useEffect, useRef, RefObject } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { useToast } from "../components/ui/use-toast";
+import { useToast } from "./ui/use-toast";
 
 type QuestionFormProps = {
   initialCode?: string | null;
-  textareaRef?: RefObject<HTMLTextAreaElement>;
 };
 
-const QuestionForm: React.FC<QuestionFormProps> = ({
-  initialCode,
-  textareaRef,
-}) => {
+const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
   const [question, setQuestion] = useState(initialCode || "");
   const [similarQuestions, setSimilarQuestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    if (initialCode) {
-      setQuestion(initialCode);
-    }
-  }, [initialCode]);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +39,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
 
       const data = await response.json();
       setSimilarQuestions(data.similarQuestions || []);
-      if (textareaRef?.current) {
+      if (textareaRef.current) {
         textareaRef.current.scrollIntoView({ behavior: "smooth" });
       }
     } catch (error) {
@@ -94,7 +83,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
 
         {similarQuestions.length > 0 && (
           <motion.div
-            className="mt-10 space-y-4"
+            className="mt-10 space-y-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -106,7 +95,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
               {similarQuestions.map((q, index) => (
                 <motion.li
                   key={index}
-                  className="p-4 bg-darkCard rounded-lg shadow-sm space-y-2"
+                  className="p-4 bg-darkCard rounded-lg shadow-sm"
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex items-start space-x-3">
@@ -116,12 +105,19 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                       </span>
                     </div>
                     <div className="flex-grow">
-                      <p className="text-lg text-lightText">
-                        {q.split("\n").map((line, idx) => (
-                          <span key={idx} className={`block`}>
-                            {line}
-                          </span>
-                        ))}
+                      <p className="text-lg font-semibold text-lightText mb-2">
+                        {q.split("\n")[0]}{" "}
+                        {/* Assume first line is the main question title */}
+                      </p>
+                      <p className="text-lightText leading-7">
+                        {q
+                          .split("\n")
+                          .slice(1)
+                          .map((line, idx) => (
+                            <span key={idx} className="block">
+                              {line}
+                            </span>
+                          ))}
                       </p>
                     </div>
                   </div>

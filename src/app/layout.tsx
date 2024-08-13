@@ -3,6 +3,13 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "./lib/utils";
 import { Toaster } from "./components/ui/toaster";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,16 +25,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          inter.className
-        )}
-      >
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            inter.className
+          )}
+        >
+          <header className="flex justify-between items-center p-4 bg-darkCard text-gray-400 shadow-lg">
+            <div className="text-xl font-bold">CodeMaster</div>
+            <div>
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
+          </header>
+          <main className="flex-grow">{children}</main>
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
