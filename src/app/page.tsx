@@ -12,7 +12,6 @@ import {
 import SubscriptionSection from "./components/SubscriptionSection";
 import RemainingRequests from "./components/RemainingRequests";
 
-// Define the type for a question
 type Question = {
   title: string;
   description: string;
@@ -30,22 +29,18 @@ const HomePage = () => {
   const [remainingRequests, setRemainingRequests] = useState<number>(0);
   const [subscriptionStatus, setSubscriptionStatus] = useState<string>("free");
 
-  // Fetch questions from Supabase on component mount
   useEffect(() => {
     const fetchQuestions = async () => {
       const { data, error } = await supabase.from("questions").select("*");
-
       if (error) {
         console.error("Error fetching questions:", error);
       } else {
         setQuestions(data as Question[]);
       }
     };
-
     fetchQuestions();
   }, []);
 
-  // Fetch remaining requests and subscription status
   useEffect(() => {
     const fetchUserInfo = async () => {
       const remaining = await fetchRemainingRequests();
@@ -54,13 +49,12 @@ const HomePage = () => {
       setRemainingRequests(remaining);
       setSubscriptionStatus(status);
     };
-
     fetchUserInfo();
   }, []);
 
   const handleQuestionSelect = (question: Question) => {
     setSelectedQuestion(question.description);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLanguageSelect = (language: string) => {
@@ -99,7 +93,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center p-8 bg-dark-gradient space-y-12">
       <QuestionForm initialCode={selectedQuestion} />
-      <h2 className="text-3xl font-bold text-center mt-10 mb-8 text-lightText">
+      <h2 className="text-4xl font-extrabold text-center mt-10 mb-8 text-lightText tracking-tight">
         Example Coding Questions
       </h2>
 
@@ -108,7 +102,7 @@ const HomePage = () => {
       <SubscriptionSection status={subscriptionStatus} />
 
       {/* Filters Container with Max Width */}
-      <div className="w-full max-w-6xl mx-auto space-y-4">
+      <div className="w-full max-w-4xl mx-auto space-y-6">
         {/* Language Filter */}
         <div className="flex flex-wrap justify-center gap-4">
           {[
@@ -124,10 +118,10 @@ const HomePage = () => {
             <button
               key={lang}
               onClick={() => handleLanguageSelect(lang)}
-              className={`py-2 px-5 rounded-full transition-colors duration-300 ${
+              className={`py-2 px-5 rounded-full transition-colors duration-300 text-lg font-medium tracking-wide ${
                 selectedLanguage === lang
-                  ? "bg-primary text-white"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:shadow-md"
               }`}
             >
               {lang}
@@ -141,10 +135,10 @@ const HomePage = () => {
             <button
               key={level}
               onClick={() => handleDifficultySelect(level)}
-              className={`py-2 px-5 rounded-full transition-colors duration-300 ${
+              className={`py-2 px-5 rounded-full transition-colors duration-300 text-lg font-medium tracking-wide ${
                 selectedDifficulty === level
-                  ? "bg-primary text-white"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:shadow-md"
               }`}
             >
               {level}
@@ -158,10 +152,10 @@ const HomePage = () => {
             <button
               key={tag}
               onClick={() => handleTagToggle(tag)}
-              className={`py-1 px-4 rounded-full transition-colors duration-300 ${
+              className={`py-1.5 px-4 rounded-full transition-colors duration-300 text-md font-medium ${
                 selectedTags.includes(tag)
-                  ? "bg-primary text-white"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:shadow-md"
               }`}
             >
               {tag}
@@ -176,8 +170,8 @@ const HomePage = () => {
           <motion.div
             key={index}
             className="p-4"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleQuestionSelect(question)}
           >
             <QuestionCard

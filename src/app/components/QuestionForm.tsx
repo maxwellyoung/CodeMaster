@@ -50,17 +50,17 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen  rounded-lg  p-8 ">
       <motion.div
-        className="w-full max-w-3xl p-8 bg-darkCard rounded-lg shadow-lg"
+        className="w-full max-w-3xl p-8 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-lg shadow-2xl"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        <h1 className="text-4xl font-extrabold tracking-tight text-white lg:text-5xl">
           CodeMaster
         </h1>
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-light tracking-tight first:mt-0 mb-8">
+        <h2 className="border-b pb-2 text-3xl font-light tracking-tight text-gray-300 mb-8">
           Your AI-Powered Coding Practice Tool
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -70,11 +70,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Enter your coding question here..."
             rows={6}
-            className="w-full p-4 text-lg border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-darkCard text-lightText"
+            className="w-full p-4 text-lg border-none rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-gray-800 text-gray-100 placeholder-gray-400"
           />
           <Button
             type="submit"
-            className="w-full py-3 bg-primary text-white text-lg rounded-md shadow-glow transition-all hover:bg-primaryHover"
+            className="w-full py-3 text-lg rounded-md shadow-glow transition-all bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
             disabled={loading}
           >
             {loading ? "Generating..." : "Get Similar Questions"}
@@ -88,14 +88,14 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <h3 className="text-2xl font-medium text-lightText mb-4">
+            <h3 className="text-2xl font-medium text-white mb-4">
               Similar Questions
             </h3>
             <ul className="space-y-6">
               {similarQuestions.map((q, index) => (
                 <motion.li
                   key={index}
-                  className="p-4 bg-darkCard rounded-lg shadow-sm"
+                  className="p-4 bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex items-start space-x-3">
@@ -105,11 +105,10 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ initialCode }) => {
                       </span>
                     </div>
                     <div className="flex-grow">
-                      <p className="text-lg font-semibold text-lightText mb-2">
-                        {q.split("\n")[0]}{" "}
-                        {/* Assume first line is the main question title */}
+                      <p className="text-lg font-semibold text-white mb-2">
+                        {q.split("\n")[0]}
                       </p>
-                      <p className="text-lightText leading-7">
+                      <p className="text-gray-400 leading-7">
                         {q
                           .split("\n")
                           .slice(1)
