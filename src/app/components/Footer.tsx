@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     <footer className="py-4 text-gray-400 text-center">
       <p>
         &copy; {new Date().getFullYear()}{" "}
-        <Link href={"ninetynine.digital"} className="hover:underline">
+        <Link href={"http://ninetynine.digital/"} className="hover:underline">
           ninetynine digital
         </Link>
         . All rights reserved.

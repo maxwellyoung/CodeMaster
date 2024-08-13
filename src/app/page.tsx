@@ -104,32 +104,6 @@ const HomePage = () => {
 
       {/* Filters Container with Max Width */}
       <div className="w-full max-w-4xl mx-auto space-y-6">
-        {/* Language Filter */}
-        <div className="flex flex-wrap justify-center gap-4">
-          {[
-            "All",
-            "JavaScript",
-            "Python",
-            "Go",
-            "Ruby",
-            "Java",
-            "C++",
-            "HTML/CSS",
-          ].map((lang) => (
-            <button
-              key={lang}
-              onClick={() => handleLanguageSelect(lang)}
-              className={`py-2 px-5 rounded-full transition-colors duration-300 text-lg font-medium tracking-wide ${
-                selectedLanguage === lang
-                  ? "bg-primary text-white shadow-lg"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:shadow-md"
-              }`}
-            >
-              {lang}
-            </button>
-          ))}
-        </div>
-
         {/* Difficulty Filter */}
         <div className="flex justify-center gap-4">
           {["All", "Easy", "Medium", "Hard"].map((level) => (

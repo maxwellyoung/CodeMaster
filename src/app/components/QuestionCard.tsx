@@ -24,13 +24,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       whileTap={{ scale: 0.95 }}
       onClick={onSelect}
     >
-      <Card className="p-6 shadow-lg rounded-xl bg-gradient-to-r from-gray-800 via-gray-900 to-black border border-gray-200 hover:shadow-xl transition-shadow">
+      <Card className="p-6 shadow-lg rounded-xl bg-gradient-to-r from-[#202427] to-[#1C1C1E] border border-gray-600 hover:shadow-xl transition-shadow">
         <h2 className="text-xl font-semibold text-white mb-1">{title}</h2>
         <p className="text-gray-400 text-sm mb-2">{description}</p>
         {difficulty && (
           <p className="text-sm text-gray-400 mb-1">
             Difficulty:{" "}
-            <span className="font-medium text-primary">{difficulty}</span>
+            <span className="font-medium text-[#6466F1]">{difficulty}</span>
           </p>
         )}
         {tags && (

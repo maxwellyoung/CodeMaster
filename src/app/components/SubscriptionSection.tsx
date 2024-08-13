@@ -51,7 +51,7 @@ const SubscriptionSection: React.FC<SubscriptionSectionProps> = ({
       {status === "free" && (
         <button
           onClick={handleUpgrade}
-          className={`py-3 px-6 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 ${
+          className={`py-3 px-6 bg-primary text-white rounded-full shadow-lg hover:bg-primary-light transition-colors duration-300 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={loading}
