@@ -12,6 +12,7 @@ import {
   fetchRemainingRequests,
   fetchSubscriptionStatus,
 } from "../../utils/userInfo";
+import Link from "next/link";
 
 const Header: React.FC = () => {
   const { user } = useUser();
@@ -62,7 +63,7 @@ const Header: React.FC = () => {
     <header className="w-full flex justify-between items-center p-4 bg-white dark:bg-gray-950 shadow-md">
       <div className="flex items-center space-x-4">
         <div className="text-2xl font-extrabold text-gray-900 dark:text-gray-100">
-          CodeMaster
+          <Link href="/">CodeMaster</Link>
         </div>
         <div className="hidden md:flex items-center space-x-2 text-sm sm:text-md font-medium text-gray-900 dark:text-gray-100">
           <div>

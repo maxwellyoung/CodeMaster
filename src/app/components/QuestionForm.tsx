@@ -140,7 +140,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                   key={index}
                   title={q.title}
                   description={q.description}
-                  onSelect={handleQuestionSelect} // Pass the description to handleQuestionSelect
+                  onSelect={() => handleQuestionSelect(q.description)} // Correctly pass description here
                 />
               ))}
             </div>
